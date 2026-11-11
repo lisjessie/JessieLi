@@ -1,0 +1,1513 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<style>html{-webkit-text-size-adjust:100%}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+<title>Jessie Li</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400..800&family=Geist+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&display=swap">
+<style>
+/* Layout: the page opens as a laptop screen filling the window. Scrolling reads the screen,
+   pulls back to show the laptop, shuts it and drops it. The bag's contents land scattered
+   on a white floor below. White ground by request, one blue, soft shadows. Single theme. */
+:root{
+  color-scheme:light;
+  --bg:#FFFFFF;
+  --page:#F8F7F4;
+  --grid:#ECEAE4;
+  --field:#F4F2EE;
+  --faint:#9A978F;
+  --green:#2FB463;
+  --gold:#E0A21B;
+  --coral:#F0835A;
+  --card-shadow:0 1px 2px rgba(30,30,34,.06), 0 18px 40px rgba(30,30,34,.07);
+  --ink:#1E1E22;
+  --muted:#6E6B64;
+  --rule:#ECEAE4;
+  --blue:#3B68E3;
+  --navy:#16305E;
+  --tint:#E8EEFD;
+  --slate:#2B3850;
+  --alu:#E4E8EE;
+  --alu-deep:#BCC4D0;
+  --wood:#DDBE92;
+  --shadow:rgba(30,30,34,.17);
+  --dot-r:#EE6A5F;
+  --dot-y:#F5BD4F;
+  --dot-g:#61C454;
+  --stk-green:#177D5C;
+  --stk-coral:#F58A5C;
+
+  --display:"Geist","Helvetica Neue",Helvetica,Arial,sans-serif;
+  --serif:"Instrument Serif",Georgia,"Times New Roman",serif;
+  --body:"Geist","Helvetica Neue",Helvetica,Arial,sans-serif;
+  --mono:"Geist Mono",ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+}
+*{box-sizing:border-box}
+body{background:var(--bg); color:var(--ink); font-family:var(--body); font-size:17px; line-height:1.55}
+h1,h2,h3,p,ul,figure{margin:0}
+ul{padding:0; list-style:none}
+.mono{font-family:var(--mono); font-size:13px; letter-spacing:.08em; text-transform:uppercase; color:var(--muted)}
+.blank{color:var(--blue); text-decoration:underline dashed; text-decoration-thickness:2px; text-underline-offset:.14em}
+
+/* ---------- the screen (about me) ---------- */
+.stage{position:relative}
+.screen{background:var(--bg)}
+.chrome{display:flex; align-items:center; gap:7px; height:44px; padding-inline:16px}
+.dots{display:flex; gap:7px}
+.nav{margin-left:auto; display:flex; gap:clamp(12px,2.4vw,30px)}
+.nav a{font-family:var(--mono); font-size:13px; letter-spacing:.08em; text-transform:uppercase; color:var(--muted); text-decoration:none; padding-block:6px}
+.nav a:hover{color:var(--blue)}
+#bag, #yes, #tools, #work, #contact{scroll-margin-top:20px}
+.chrome i{width:11px; height:11px; border-radius:50%; background:var(--dot-r)}
+.chrome i:nth-child(2){background:var(--dot-y)}
+.chrome i:nth-child(3){background:var(--dot-g)}
+.view{
+  display:grid; grid-template-columns:minmax(0,.7fr) minmax(0,1.5fr);
+  gap:clamp(20px,5vw,72px); padding-inline:clamp(16px,6vw,96px);
+}
+.me{align-self:center; display:flex; flex-direction:column; gap:10px}
+.me-box{
+  width:100%; max-width:330px; aspect-ratio:3/4; max-height:56vh;
+  background:var(--tint); border:1.5px dashed var(--blue); display:grid; place-items:center;
+}
+.me-box svg{width:62%; height:auto; display:block}
+.fig{fill:none; stroke:var(--ink); stroke-width:4; stroke-linecap:round; stroke-linejoin:round}
+.fig-note{fill:var(--blue); font-family:var(--mono); font-size:17px; letter-spacing:.08em}
+.fig-arrow{fill:none; stroke:var(--blue); stroke-width:2.5; stroke-linecap:round; stroke-linejoin:round}
+.copy-window{min-width:0}
+.blk{display:flex; flex-direction:column; justify-content:center; gap:18px; padding-block:28px}
+.blk h1{
+  font-family:var(--display); font-weight:800; font-size:clamp(3.4rem,8.4vw,7.6rem);
+  line-height:.88; letter-spacing:-.035em;
+}
+.blk p, .blk li{font-size:clamp(1.05rem,1.55vw,1.35rem); line-height:1.45; max-width:30em}
+.blk ul{display:flex; flex-direction:column; gap:16px}
+.blk strong{font-weight:600; display:block}
+.blk li span{color:var(--muted)}
+.hint{font-family:var(--mono); font-size:13px; letter-spacing:.08em; text-transform:uppercase; color:var(--blue)}
+.sleep{display:none; position:absolute; inset:0; background:var(--ink); opacity:0; pointer-events:none}
+.base{display:none; position:absolute; background:linear-gradient(var(--alu),var(--alu-deep)); border-radius:3px 3px 12px 12px}
+.base::before{
+  content:""; position:absolute; left:43%; top:0; width:14%; height:38%;
+  background:var(--alu-deep); border-radius:0 0 8px 8px;
+}
+.base::after{content:""; position:absolute; left:0; right:0; top:46%; height:1.5px; background:var(--alu-deep); opacity:var(--seam,0)}
+.streaks{display:none; position:absolute; justify-content:space-between; pointer-events:none}
+.streaks i{width:2px; height:100%; background:linear-gradient(to bottom, transparent, var(--alu-deep))}
+.beat{
+  display:none; position:absolute; left:0; right:0; transform:translateY(-50%); z-index:3;
+  padding-inline:16px; text-align:center; pointer-events:none;
+  font-family:var(--display); font-weight:700; font-size:clamp(1.7rem,4.6vw,3.6rem);
+  line-height:1.06; letter-spacing:-.025em;
+}
+.beat span{display:block; opacity:0}
+.beat span + span{color:var(--blue)}
+.faller{position:absolute; left:0; top:0; opacity:0; pointer-events:none; z-index:1}
+.faller svg{display:block; width:100%; height:auto; overflow:visible; filter:drop-shadow(0 7px 9px var(--shadow))}
+
+/* live mode: the scroll sequence (added by script; without it the page reads as plain sections) */
+.is-live .track{height:340vh}
+.is-live .stage{position:sticky; top:0; height:100vh; height:100svh; overflow:hidden}
+.is-live .lid{position:absolute; left:0; top:0; width:100%; height:100%; background:var(--ink); transform-origin:50% 100%}
+.is-live .screen{position:relative; width:100%; height:100%; overflow:hidden}
+.is-live .screen-inner{position:absolute; left:0; top:0; width:100%; height:100%; transform-origin:0 0}
+.is-live .page{height:100%; display:grid; grid-template-rows:auto minmax(0,1fr)}
+.is-live .view{min-height:0; grid-template-rows:minmax(0,1fr)}
+.is-live .copy-window{overflow:hidden; min-height:0; container-type:size}
+.is-live .blk{min-height:100cqh}
+.is-live .sleep, .is-live .base{display:block}
+.is-live .streaks{display:flex}
+.is-live .beat{display:block}
+
+/* ---------- the floor ---------- */
+.wrap{
+  max-width:1180px; margin-inline:auto; padding-inline:clamp(16px,4vw,40px);
+  padding-block:clamp(28px,5vw,64px) 56px;
+  display:flex; flex-direction:column; gap:clamp(36px,6vw,72px);
+}
+.floor-sec{display:flex; flex-direction:column; gap:clamp(18px,3vw,28px)}
+.floor-head{display:flex; flex-direction:column; gap:10px}
+.floor-head h2{
+  font-family:var(--display); font-weight:700; font-size:clamp(2rem,4.6vw,3.6rem);
+  line-height:1; letter-spacing:-.025em; text-wrap:balance; max-width:16em;
+}
+.spread{position:relative; display:grid; grid-template-columns:minmax(0,1.7fr) minmax(0,1fr); gap:clamp(16px,2.4vw,28px); align-items:start}
+.floor{position:relative; aspect-ratio:10/7.6; max-width:100%}
+.item{
+  position:absolute; left:calc(var(--x)*1%); top:calc(var(--y)*1%); width:calc(var(--w)*1%);
+  padding:0; border:0; background:none; cursor:pointer; font:inherit; color:var(--ink);
+  -webkit-tap-highlight-color:transparent;
+}
+.item svg{
+  display:block; width:100%; height:auto; overflow:visible;
+  transform:rotate(calc(var(--r) + var(--spin,0deg))) scale(var(--full,1));
+  filter:drop-shadow(0 7px 9px var(--shadow));
+  transition:filter .2s;
+}
+.item:hover svg{filter:drop-shadow(0 12px 14px var(--shadow))}
+.item[aria-pressed="true"] svg{filter:drop-shadow(0 0 0 var(--blue)) drop-shadow(0 8px 16px color-mix(in srgb, var(--blue) 45%, transparent))}
+.item:focus-visible{outline:2px solid var(--blue); outline-offset:7px; border-radius:6px}
+.tag{
+  position:absolute; left:50%; top:100%; transform:translateX(-50%); margin-top:10px;
+  font-family:var(--mono); font-size:12px; letter-spacing:.08em; text-transform:uppercase;
+  white-space:nowrap; padding:1px 6px; border-radius:2px; color:var(--muted);
+}
+.item[aria-pressed="true"] .tag{background:var(--blue); color:var(--bg)}
+
+.f-blue{fill:var(--blue)} .f-navy{fill:var(--navy)} .f-ink{fill:var(--ink)} .f-slate{fill:var(--slate)}
+.f-tint{fill:var(--tint)} .f-alu{fill:var(--alu)} .f-alud{fill:var(--alu-deep)} .f-bg{fill:var(--bg)} .f-wood{fill:var(--wood)}
+.s-tint{fill:none; stroke:var(--tint); stroke-width:2.5}
+.s-alud{fill:none; stroke:var(--alu-deep); stroke-width:2}
+.s-navy{fill:none; stroke:var(--navy); stroke-linecap:round}
+.s-blue{fill:none; stroke:var(--blue); stroke-linecap:round}
+.sticker{fill:var(--bg); font-family:var(--display); font-weight:800; font-size:34px}
+
+.i-laptop  {--x:31; --y:6;  --w:34;  --r:-6deg}
+.i-bag     {--x:3;  --y:5;  --w:22;  --r:-10deg}
+.i-camera  {--x:72; --y:8;  --w:21;  --r:8deg}
+.i-airpods {--x:81; --y:40; --w:9;   --r:-12deg}
+.i-notebook{--x:8;  --y:54; --w:15;  --r:6deg}
+.i-phone   {--x:29; --y:50; --w:9.5; --r:-7deg}
+.i-passport{--x:44; --y:48; --w:12;  --r:10deg}
+.i-card    {--x:62; --y:46; --w:11;  --r:-5deg}
+.i-pens    {--x:38; --y:83; --w:22;  --r:-10deg}
+.i-sticks  {--x:75; --y:78; --w:22;  --r:-8deg}
+
+.notes{
+  background:var(--bg); border:1px solid var(--rule);
+  padding:clamp(20px,2.4vw,30px); display:flex; flex-direction:column; gap:20px; min-width:0;
+}
+.notes[hidden]{display:none}
+.note-actions{display:flex; flex-wrap:wrap; gap:8px}
+
+/* the luggage tag that swings out of the bag once everything is packed */
+.wrap{overflow-x:clip}   /* stops the swinging tag widening the page; the gutter leaves room for glows at the floor's edge */
+.win{
+  position:absolute; left:0; top:0; width:min(330px,100%); z-index:1; transform-origin:50% 0;
+  display:flex; flex-direction:column; align-items:center;
+  filter:drop-shadow(0 10px 14px var(--shadow));
+}
+.win[hidden]{display:none}
+.string{position:relative; z-index:1; flex:none; width:2px; height:var(--string,120px); margin-bottom:-24px; background:var(--navy)}
+.lug{
+  position:relative; width:100%; background:var(--tint); padding:50px 24px 26px; text-align:center;
+  display:flex; flex-direction:column; align-items:center; gap:16px;
+  clip-path:polygon(17% 0, 83% 0, 100% 34px, 100% 100%, 0 100%, 0 34px);
+}
+.hole{position:absolute; top:16px; left:50%; width:16px; height:16px; margin-left:-8px; border-radius:50%; background:var(--bg); box-shadow:0 0 0 3px var(--blue)}
+.win .note{align-items:center; gap:10px}
+.win .note h3{font-size:1.7rem}
+.win .note p{font-size:.98rem; max-width:22em}
+.win-actions{display:flex; flex-wrap:wrap; justify-content:center; gap:8px}
+.item.is-done .tag{visibility:hidden}
+.item.is-done{cursor:default}
+.i-bag .tag{margin-top:calc(10px + (var(--full,1) - 1)*110px)}
+.next[hidden]{display:none}
+.item.is-packed{visibility:hidden; pointer-events:none}
+.item.is-read:not(.i-bag) .tag::before{content:"\2713\00a0"}
+#pack-count{color:var(--ink)}
+.note{display:flex; flex-direction:column; gap:14px}
+.note[hidden]{display:none}
+.note h3{
+  font-family:var(--display); font-weight:700; font-size:clamp(1.6rem,2.4vw,2.1rem);
+  line-height:1.05; letter-spacing:-.015em; text-wrap:balance;
+}
+.frames{display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:8px}
+.frame{
+  aspect-ratio:3/4; border:1.5px dashed var(--blue); color:var(--blue); overflow:hidden;
+  display:grid; place-items:center; text-align:center;
+  font-family:var(--mono); font-size:11px; letter-spacing:.06em; text-transform:uppercase;
+}
+.frame.has-photo{border:0}
+.frame img{width:100%; height:100%; object-fit:cover; display:block}
+.next{
+  align-self:flex-start; font-family:var(--mono); font-size:13px; letter-spacing:.08em; text-transform:uppercase;
+  color:var(--blue); background:none; border:1.5px solid currentColor; border-radius:999px;
+  padding:9px 16px; cursor:pointer; transition:background .15s, color .15s;
+}
+.next:hover{background:var(--blue); color:var(--bg)}
+.next:focus-visible{outline:2px solid var(--blue); outline-offset:3px}
+
+/* ---------- moving things around ---------- */
+.item.is-read{cursor:grab}
+.item{touch-action:manipulation; user-select:none; -webkit-user-select:none; -webkit-touch-callout:none}
+.item.i-laptop{z-index:2}
+.item.dragging{cursor:grabbing}
+.item.dragging svg{transform:rotate(calc(var(--r) + var(--spin,0deg))) scale(calc(var(--full,1)*1.08)); filter:drop-shadow(0 16px 16px var(--shadow))}
+.floor-tools{display:flex; flex-wrap:wrap; align-items:center; gap:10px 16px; padding-top:4px}
+.hint-touch{display:none}
+@media (pointer:coarse){ .hint-mouse{display:none} .hint-touch{display:inline} }
+
+/* ---------- what each item does ---------- */
+.fx{position:absolute; inset:0; overflow:hidden; pointer-events:none; z-index:4}
+.flash{
+  position:absolute; width:70%; aspect-ratio:1; border-radius:50%; opacity:0; transform:translate(-50%,-50%);
+  background:radial-gradient(circle, var(--bg) 0 16%, color-mix(in srgb, var(--blue) 38%, var(--bg)) 32%, transparent 66%);
+}
+.polaroid{
+  position:absolute; left:calc(var(--px)*1%); top:calc(var(--py)*1%); width:calc(var(--pw)*1%); aspect-ratio:5/6;
+  background:var(--bg); border:1px solid var(--rule); box-shadow:0 6px 10px var(--shadow);
+  padding:4px 4px 13px; transform:rotate(var(--pr)); pointer-events:none; z-index:3;
+}
+.polaroid[hidden]{display:none}
+.polaroid img{width:100%; height:100%; object-fit:cover; display:block}
+.polaroid span{
+  display:grid; place-items:center; width:100%; height:100%; background:var(--tint); color:var(--blue);
+  font-family:var(--mono); font-size:8px; letter-spacing:.06em; text-transform:uppercase; text-align:center; line-height:1.2;
+}
+.p1{--px:90; --py:56; --pw:9; --pr:8deg}
+.p2{--px:66; --py:31; --pw:9; --pr:-9deg}
+.p3{--px:25; --py:82; --pw:9; --pr:5deg}
+.glow{opacity:0; transition:opacity .25s}
+.item[aria-pressed="true"] .glow{opacity:1}
+
+.visa{display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:10px; padding:14px; background:var(--tint); border-radius:4px}
+.visa > *{aspect-ratio:1.3; display:grid; place-items:center; min-width:0}
+.visa svg{width:86%; height:auto; overflow:visible}
+.ink{fill:none; stroke:var(--blue)}
+.ink-text{fill:var(--blue); font-family:var(--mono); font-weight:500; letter-spacing:.1em}
+.empty{
+  border:2px dashed var(--alu-deep); color:var(--muted); text-align:center; align-content:center; gap:2px;
+  font-family:var(--mono); font-size:12px; letter-spacing:.08em; text-transform:uppercase;
+}
+.empty small{font-size:10px; display:block}
+.empty.e1{border-radius:50%; aspect-ratio:1; width:76%; justify-self:center}
+.empty.e2{border-radius:10px}
+.empty.e3{border-radius:999px}
+.note:not([hidden]) .stamped svg{animation:thump .5s cubic-bezier(.2,1.5,.4,1) both}
+@keyframes thump{from{opacity:0; transform:scale(1.9) rotate(-22deg)} to{opacity:.94; transform:scale(1) rotate(-8deg)}}
+
+.eq{display:flex; align-items:flex-end; gap:4px; height:28px}
+.eq i{width:5px; height:100%; border-radius:2px; background:var(--blue); transform-origin:50% 100%; animation:eq .9s ease-in-out infinite alternate}
+.eq i:nth-child(2){animation-delay:-.35s} .eq i:nth-child(3){animation-delay:-.6s}
+.eq i:nth-child(4){animation-delay:-.15s} .eq i:nth-child(5){animation-delay:-.75s}
+@keyframes eq{from{transform:scaleY(.18)} to{transform:scaleY(1)}}
+
+.receipt{margin:0; padding:14px; background:var(--tint); border-radius:4px; display:flex; flex-direction:column; gap:8px; font-family:var(--mono); font-size:13px; line-height:1.35}
+.receipt div{display:flex; justify-content:space-between; gap:14px}
+.receipt dt{color:var(--ink)} .receipt dd{margin:0; text-align:right; color:var(--muted)}
+.receipt .total{border-top:1.5px dashed var(--alu-deep); padding-top:8px}
+.receipt .total dd{color:var(--blue)}
+
+.todo{display:flex; flex-direction:column; gap:12px}
+.todo li{display:flex; align-items:flex-start; gap:12px}
+.todo input{width:19px; height:19px; margin:3px 0 0; flex:none; accent-color:var(--blue)}
+.todo label{font-size:1.08rem; cursor:pointer}
+.todo input:checked + label{text-decoration:line-through; color:var(--muted)}
+
+@media (prefers-reduced-motion:reduce){
+  .note:not([hidden]) .stamped svg{animation:none; opacity:.94; transform:rotate(-8deg)}
+  .eq i{animation:none} .eq i:nth-child(odd){transform:scaleY(.5)}
+}
+
+/* ---------- things I said yes to ---------- */
+.yes{display:flex; flex-direction:column; gap:clamp(18px,3vw,30px); border-top:1px solid var(--rule); padding-top:22px}
+.yes-list{display:flex; flex-direction:column; max-width:880px}
+.yes-list li{display:grid; grid-template-columns:11.5rem 22px minmax(0,1fr); column-gap:16px}
+.yes-when{padding-top:5px; text-align:right}
+.yes-dot{position:relative; display:flex; justify-content:center}
+.yes-dot::before{content:""; position:absolute; top:0; bottom:0; width:2px; background:var(--tint)}
+.yes-list li:first-child .yes-dot::before{top:10px}
+.yes-list li:last-child .yes-dot::before{bottom:auto; height:10px}
+.yes-dot::after{content:""; position:relative; z-index:1; margin-top:6px; width:12px; height:12px; border-radius:50%; background:var(--blue)}
+.is-next .yes-dot::after{background:var(--bg); border:2px dashed var(--blue)}
+.yes-body{display:flex; flex-direction:column; gap:4px; padding-bottom:28px; min-width:0}
+.yes-list li:last-child .yes-body{padding-bottom:0}
+.yes-body h3{font-family:var(--display); font-weight:600; font-size:clamp(1.2rem,2vw,1.5rem); line-height:1.15; letter-spacing:-.01em}
+.yes-body h3 em{font-style:normal; color:var(--blue)}
+.yes-body > .mono{color:var(--ink)}
+.yes-body p{font-size:.98rem; color:var(--muted); max-width:36em}
+.yes-photo{display:block; width:100%; max-width:440px; height:auto; aspect-ratio:3/2; object-fit:cover; border-radius:4px; margin-top:10px}
+
+/* ---------- tools: stickers on a laptop lid ---------- */
+.stk-legend{display:flex; flex-wrap:wrap; gap:8px; margin-bottom:18px}
+.stk-legend span{display:inline-flex; align-items:center; gap:7px; padding:6px 12px; border-radius:999px; background:var(--field); font-size:11px; color:#4B4943}
+.stk-legend i{width:9px; height:9px; border-radius:50%; background:var(--c); box-shadow:inset 0 0 0 1px var(--ring)}
+.g-data{--c:#CDEFD9; --t:#1E4D34; --ring:#8FCBA7}
+.g-product{--c:#FFD9C6; --t:#6A2E16; --ring:#F0A887}
+.g-code{--c:#D8E3FF; --t:#1F3270; --ring:#9DB4F2}
+.g-daily{--c:#FFE9A8; --t:#5A4300; --ring:#E8C35A}
+.lid-wrap{container-type:inline-size; max-width:900px}
+.lid-art{
+  position:relative; aspect-ratio:836/560; border-radius:30px; overflow:hidden;
+  background:linear-gradient(180deg, #F3F3F5, #E6E6EA); box-shadow:inset 0 0 0 1px #E0E0E5, 0 10px 24px rgba(30,30,34,.06);
+}
+.lid-art::before{content:""; position:absolute; top:14px; left:50%; width:7px; height:7px; margin-left:-3.5px; border-radius:50%; background:#CFCFD5}
+.stk{
+  position:absolute; left:var(--x); top:var(--y);
+  display:inline-flex; align-items:center; justify-content:center; gap:.4em;
+  font-family:var(--body); font-weight:600; line-height:1.1; white-space:nowrap; cursor:pointer;
+  border:3px solid #FFFFFF; background:var(--c); color:var(--t);
+  transform:rotate(var(--rot,0deg));
+  box-shadow:0 2px 4px rgba(30,30,34,.08), 0 6px 14px rgba(30,30,34,.08);
+  transition:transform .2s cubic-bezier(.2,1.4,.4,1), box-shadow .2s;
+}
+.stk svg{width:1em; height:1em; flex:none; fill:none; stroke:currentColor; stroke-width:2.2; stroke-linecap:round; stroke-linejoin:round}
+.stk:hover{transform:rotate(var(--rot,0deg)) translateY(-3px) scale(1.05); z-index:3}
+.stk[aria-pressed="true"]{z-index:5; transform:rotate(0deg) scale(1.16) translateY(-6px); box-shadow:0 4px 8px rgba(30,30,34,.12), 0 18px 30px rgba(30,30,34,.18)}
+.stk:focus-visible{outline:2px solid var(--blue); outline-offset:3px}
+.sz-l{font-size:2.63cqw; padding:.55em 1em}
+.sz-m{font-size:2.03cqw; padding:.53em .94em}
+.sz-s{font-size:1.67cqw; padding:.5em .93em}
+.sh-pill{border-radius:999px}
+.sh-rect{border-radius:12px}
+.sh-circle{border-radius:50%; width:9.33cqw; height:9.33cqw; padding:0}
+.stk-caption{display:flex; flex-wrap:wrap; align-items:center; gap:10px 14px; margin-top:22px; min-height:3em}
+.tape{
+  display:inline-flex; flex-wrap:wrap; align-items:center; gap:4px 12px; max-width:100%;
+  padding:10px 18px; background:var(--ink); color:#FFFFFF; border-radius:4px;
+  font-size:13px; letter-spacing:.14em; text-transform:uppercase; line-height:1.5;
+  transform:rotate(-1deg); box-shadow:0 4px 10px rgba(30,30,34,.18);
+}
+.tape, .tape span{color:#FFFFFF}
+.tape b{font-weight:400; color:#FFFFFF; opacity:.55}
+.stk-hint{font-size:12px; color:var(--faint)}
+/* narrow lids: let the stickers wrap instead of sitting at fixed spots */
+@container (max-width:560px){
+  .lid-art{aspect-ratio:auto; display:flex; flex-wrap:wrap; justify-content:center; align-content:center; align-items:center; gap:12px 8px; padding:34px 14px 26px; border-radius:22px}
+  .stk{position:relative; left:auto; top:auto}
+  .sz-l{font-size:17px}
+  .sz-m{font-size:14px}
+  .sz-s{font-size:12.5px}
+  .sh-circle{width:58px; height:58px}
+}
+
+/* ---------- work and contact ---------- */
+.block{
+  display:grid; grid-template-columns:minmax(0,1fr) minmax(0,3fr); gap:16px clamp(20px,4vw,56px);
+  border-top:1px solid var(--rule); padding-top:22px;
+}
+.block-body{min-width:0}
+.slots{display:grid; grid-template-columns:repeat(auto-fit,minmax(210px,1fr)); gap:14px}
+.slot{border:1px solid var(--rule); padding:18px; display:flex; flex-direction:column; gap:8px}
+.slot .badge{color:var(--blue)}
+.slot .tools{margin-top:auto; padding-top:8px}
+.rows{display:flex; flex-direction:column}
+.rows li{display:grid; grid-template-columns:minmax(0,1fr) auto; gap:6px 24px; padding-block:16px; border-bottom:1px solid var(--rule)}
+.rows li:first-child{padding-top:0}
+.rows h3{font-family:var(--display); font-weight:600; font-size:1.2rem; line-height:1.2}
+.rows p{font-size:.96rem; color:var(--muted); max-width:38em; margin-top:4px}
+.rows .mono{white-space:nowrap; padding-top:4px}
+a{color:var(--blue); text-underline-offset:.14em}
+a:focus-visible{outline:2px solid var(--blue); outline-offset:3px}
+.slot h3{font-family:var(--display); font-weight:600; font-size:1.2rem; line-height:1.15}
+.slot p{font-size:.94rem; color:var(--muted)}
+.contact{display:flex; flex-wrap:wrap; gap:10px 32px; font-size:1.1rem}
+.contact span{user-select:all}
+
+@media (max-width:860px){
+  .spread{grid-template-columns:minmax(0,1fr)}
+  .block{grid-template-columns:minmax(0,1fr)}
+}
+@media (max-width:700px){
+  body{font-size:16px}
+  .view{grid-template-columns:minmax(0,1fr); gap:6px 14px}
+  .is-live .view{grid-template-rows:auto minmax(0,1fr)}
+  .me{grid-column:1; grid-row:1; flex-direction:row; align-items:flex-end; gap:12px; padding-top:8px}
+  .me-box{width:104px; aspect-ratio:1; flex:none}
+  .copy-window{grid-column:1; grid-row:2}
+  .blk{gap:14px; padding-block:18px; justify-content:flex-start}
+  .rows li{grid-template-columns:minmax(0,1fr)}
+  .yes-list li{grid-template-columns:22px minmax(0,1fr); column-gap:12px}
+  .yes-when{grid-column:2; grid-row:1; text-align:left; padding-top:4px}
+  .yes-dot{grid-column:1; grid-row:1 / span 2}
+  .yes-body{grid-column:2; grid-row:2; padding-top:4px}
+  .floor{aspect-ratio:5/8.4}
+  .tag{font-size:11px; margin-top:7px}
+  .nav a{font-size:12px}
+  .p1{--px:62; --py:23; --pw:13}
+  .p2{--px:57; --py:58; --pw:13}
+  .p3{--px:5; --py:87; --pw:13}
+  .i-laptop  {--x:6;  --y:3;  --w:50}
+  .i-camera  {--x:62; --y:6;  --w:32}
+  .i-bag     {--x:5;  --y:30; --w:34}
+  .i-notebook{--x:46; --y:30; --w:23}
+  .i-airpods {--x:77; --y:33; --w:15}
+  .i-card    {--x:74; --y:51; --w:18}
+  .i-phone   {--x:8;  --y:62; --w:16}
+  .i-passport{--x:33; --y:60; --w:20}
+  .i-sticks  {--x:60; --y:78; --w:34}
+  .i-pens    {--x:29; --y:86; --w:28}
+}
+
+/* ===== the look: grid paper, white cards, italic accents (layout and behaviour unchanged) ===== */
+body{
+  background-color:var(--page);
+  background-image:linear-gradient(var(--grid) 1px, transparent 1px), linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+  background-size:32px 32px;
+}
+.mono{font-size:12px; letter-spacing:.08em; color:var(--muted)}
+em{font-family:var(--serif); font-style:italic; font-weight:400}
+.chip{
+  display:inline-flex; align-items:center; gap:7px; padding:5px 11px; border-radius:999px; vertical-align:middle;
+  background:var(--field); color:#4B4943; white-space:nowrap;
+  font-family:var(--mono); font-size:11px; font-weight:400; letter-spacing:.06em; text-transform:uppercase; line-height:1.3;
+}
+.chip i{flex:none; width:7px; height:7px; border-radius:50%; background:var(--c, var(--green))}
+.legend{display:flex; flex-wrap:wrap; gap:8px}
+.legend .chip{background:var(--bg); box-shadow:0 1px 2px rgba(30,30,34,.08)}
+
+/* first screen */
+.screen, .page{background:var(--bg)}
+.chrome{border-bottom:1px solid var(--rule)}
+.chrome i{width:11px; height:11px; background:var(--dot-r)}
+.chrome i:nth-child(2){background:var(--dot-y)}
+.chrome i:nth-child(3){background:var(--dot-g)}
+.hello{font-family:var(--mono); font-size:15px; color:var(--muted)}
+.me-box{border:0; border-radius:26px; background:linear-gradient(160deg, #E4ECFF, #F3F6FF); box-shadow:inset 0 0 0 1px #E3E8F5}
+.blk h1{font-weight:600; letter-spacing:-.05em}
+.blk p em, .blk h2 em{color:var(--blue); font-size:1.18em; line-height:1}
+.blk .chip{align-self:flex-start; white-space:normal}
+
+/* the bag floor sits right on the grid paper */
+.floor-head h2{font-weight:600; letter-spacing:-.035em}
+.floor-head h2 em{font-size:1.16em}
+.floor-tools .chip{background:var(--bg); box-shadow:0 1px 2px rgba(30,30,34,.08)}
+#pack-count{color:inherit}
+.notes{background:var(--bg); border:0; border-radius:22px; box-shadow:var(--card-shadow)}
+.note .file{text-transform:none; letter-spacing:.02em}
+.note h3{font-family:var(--serif); font-style:italic; font-weight:400; font-size:clamp(1.9rem,2.6vw,2.4rem); line-height:1.05; letter-spacing:0}
+.next{
+  font-family:var(--body); font-size:14px; font-weight:600; letter-spacing:0; text-transform:none;
+  color:var(--bg); background:var(--ink); border:0; border-radius:999px; padding:10px 18px;
+}
+.next:hover{background:var(--blue); color:var(--bg)}
+.next:focus-visible{outline:2px solid var(--blue); outline-offset:3px}
+.lug{background:var(--bg)}
+.win{filter:drop-shadow(0 14px 22px rgba(30,30,34,.16))}
+.string{background:var(--ink)}
+.hole{box-shadow:0 0 0 3px var(--ink)}
+.win .note h3{font-size:2rem}
+
+/* sections: headings on the grid, content on white cards */
+.yes{border-top:0; padding-top:0}
+.yes .floor-head h2 em{color:var(--blue)}
+.yes-list{background:var(--bg); border-radius:22px; padding:clamp(22px,3vw,36px) clamp(18px,3vw,40px); box-shadow:var(--card-shadow); max-width:none}
+.yes-dot::before{background:var(--rule)}
+.yes-body h3{font-weight:600; letter-spacing:-.015em}
+.yes-body h3 em{color:var(--blue); font-size:1.2em}
+.yes-body h3 .chip{margin-left:6px; position:relative; top:-2px}
+.yes-photo{border-radius:14px}
+.block{border-top:0; padding-top:0}
+#tools .block-body, #todo .block-body, #contact .block-body{background:var(--bg); border-radius:22px; padding:clamp(20px,2.6vw,30px); box-shadow:var(--card-shadow)}
+.slot{position:relative; overflow:hidden; border:0; background:var(--bg); border-radius:20px; padding:118px 20px 20px; box-shadow:var(--card-shadow)}
+.slot::before{content:""; position:absolute; left:10px; right:10px; top:10px; height:96px; border-radius:14px; background:linear-gradient(150deg, #FFD9C7, #FFB59A)}
+.slot:nth-child(2)::before{background:linear-gradient(150deg, #DDE7FF, #B9CBFF)}
+.slot:nth-child(3)::before{background:linear-gradient(150deg, #DDF5E8, #B3E6CB)}
+.slot .chip{align-self:flex-start}
+.slot h3{font-family:var(--serif); font-style:italic; font-weight:400; font-size:2rem; line-height:1}
+.contact{gap:10px}
+.contact > span{padding:11px 18px; border-radius:999px; background:var(--ink); color:var(--bg); font-size:15px; font-weight:600}
+.contact > a{padding:11px 18px; border-radius:999px; background:var(--field); color:var(--ink); text-decoration:none; font-size:15px; font-weight:600}
+@media (max-width:700px){
+  .yes-body h3 .chip{margin:6px 0 0; top:0}
+  .slot{padding-top:110px}
+}
+
+/* ===== the yes timeline opens one entry at a time ===== */
+.yes-body{gap:0; padding-bottom:0; border-bottom:1px solid #F1EFEA}
+.yes-list li:last-child .yes-body{border-bottom:0}
+.yes-body h3{margin:0; font-size:inherit; line-height:inherit; letter-spacing:0}
+.yes-toggle{
+  position:relative; display:flex; align-items:center; flex-wrap:wrap; gap:8px 12px; width:100%; min-height:56px;
+  padding:10px 48px 10px 0; border:0; background:none; color:var(--ink); font:inherit; text-align:left; cursor:pointer;
+}
+.yes-title{font-family:var(--display); font-weight:600; font-size:clamp(1.15rem,1.9vw,1.4rem); line-height:1.2; letter-spacing:-.015em}
+.yes-title em{color:var(--blue); font-size:1.2em}
+.yes-body .yes-toggle .chip{margin:0; top:0}
+.yes-plus{position:absolute; right:0; top:50%; width:30px; height:30px; margin-top:-15px; border-radius:50%; background:var(--field); transition:background .15s}
+.yes-plus::before, .yes-plus::after{content:""; position:absolute; left:50%; top:50%; width:12px; height:2px; margin:-1px 0 0 -6px; border-radius:1px; background:var(--muted); transition:transform .2s}
+.yes-plus::after{transform:rotate(90deg)}
+.yes-toggle[aria-expanded="true"] .yes-plus::after{transform:rotate(0deg)}
+.yes-toggle:hover .yes-plus{background:var(--rule)}
+.yes-toggle:focus-visible{outline:2px solid var(--blue); outline-offset:4px; border-radius:8px}
+.yes-detail{display:flex; flex-direction:column; gap:6px; padding:0 0 20px}
+.yes-detail[hidden]{display:none}
+.yes-when{padding-top:19px}
+.yes-dot::after{margin-top:22px}
+.yes-list li:first-child .yes-dot::before{top:28px}
+.yes-list li:last-child .yes-dot::before{height:28px}
+@media (max-width:700px){
+  .yes-when{padding-top:4px}
+  .yes-dot::after{margin-top:6px}
+  .yes-list li:first-child .yes-dot::before{top:10px}
+  .yes-list li:last-child .yes-dot::before{height:10px}
+  .yes-toggle{min-height:48px; padding-top:4px}
+}
+
+/* ===== her photo in the first screen ===== */
+.me-box.has-photo{overflow:hidden; background:var(--tint)}
+.me-box.has-photo img{width:100%; height:100%; object-fit:cover; object-position:50% 25%; display:block}
+@media (max-width:700px){ .me-box.has-photo img{object-position:50% 30%; transform:scale(1.7); transform-origin:50% 30%} }
+</style>
+</head>
+<body>
+
+
+<section class="track" aria-label="About Jessie Li">
+  <div class="stage">
+    <div class="lid">
+      <div class="screen">
+        <div class="screen-inner">
+          <div class="page">
+            <div class="chrome"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><nav class="nav" aria-label="Sections"><a href="#bag">Bag</a><a href="#yes">Experience</a><a href="#work">Projects</a><a href="#contact">Contact</a></nav></div>
+            <div class="view">
+              <figure class="me">
+                <div class="me-box has-photo">
+                  <img src="img/jessie.jpg" alt="Jessie Li standing by a stairwell in a black sleeveless top">
+                </div>
+              </figure>
+
+              <div class="copy-window">
+                <div class="copy">
+                  <div class="blk">
+                    <span class="hello">hi, i'm</span>
+                    <h1>Jessie Li</h1>
+                    <span class="chip"><i style="--c:var(--green)"></i>Open to a product or BA co-op · Jan 2027</span>
+                    <p>I say <em>yes</em> to things I haven't tried. That's how I ended up changing majors, spending a summer at Fudan University in Shanghai, and ordering whatever I haven't had before.</p>
+                    <p>I'm a fourth-year MIS student at RIT, graduating December 2027, looking for a co-op or internship in product management or business analysis, starting January 2027. I like getting to know people and taking something from nothing to finished.</p>
+                    <span class="hint">Scroll down more &darr;</span>
+                  </div>
+                  <div class="blk">
+                    <span class="mono">What I bring</span>
+                    <ul>
+                      <li><strong>Product management intern at Waygate Technologies, a Baker Hughes business.</strong> <span>Seven months helping take industrial products to market, from sales data to a training event for 150+ people.</span></li>
+                      <li><strong>I build things fast with a team.</strong> <span>Signiverse won 1st place among 15 teams. SideQuest went from idea to working platform in 48 hours.</span></li>
+                      <li><strong>Two years of computer science first.</strong> <span>I know how software gets built, and I can talk to the people who build it.</span></li>
+                    </ul>
+                    <span class="hint">Keep scrolling &darr;</span>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+        <div class="sleep" aria-hidden="true"></div>
+      </div>
+    </div>
+    <div class="base" aria-hidden="true"></div>
+    <div class="streaks" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>
+    <p class="beat"><span>That's the résumé part.</span><span>Here's the rest of me.</span></p>
+  </div>
+</section>
+
+<main class="wrap">
+
+  <section class="floor-sec" id="bag">
+    <div class="floor-head">
+      <span class="mono">On the floor</span>
+      <h2>Everything that was in my <em>bag.</em></h2>
+      <div class="floor-tools">
+        <span class="chip"><i style="--c:var(--gold)"></i><span id="pack-count">0 of 9 packed</span></span>
+        <span class="mono">Click an item to read it. Then you can move it and put it back in the bag.</span>
+        <button class="next" id="spill-all" type="button" hidden>Spill it again</button>
+      </div>
+    </div>
+
+    <div class="spread">
+      <div class="floor" role="group" aria-label="The contents of my bag, scattered on the floor">
+
+        <button class="item i-laptop" data-item="laptop" aria-pressed="false">
+          <svg viewBox="0 0 300 200" aria-hidden="true">
+            <rect class="f-alu" x="4" y="4" width="292" height="192" rx="16"/>
+            <rect class="s-alud" x="4" y="4" width="292" height="192" rx="16"/>
+            <circle class="f-blue" cx="150" cy="100" r="27"/>
+            <text class="sticker" x="150" y="112" text-anchor="middle">J</text>
+          </svg>
+          <span class="tag">Laptop</span>
+        </button>
+
+        <button class="item i-bag" data-item="bag" aria-pressed="true">
+          <svg viewBox="0 0 200 250" aria-hidden="true">
+            <path class="s-navy" stroke-width="9" d="M58 84C58 8 142 8 142 84"/>
+            <path class="s-blue" stroke-width="9" d="M74 84C74 32 126 32 126 84"/>
+            <path class="f-blue" d="M22 78H178L190 236Q190 244 182 244H18Q10 244 10 236Z"/>
+            <path class="s-tint" d="M24 98H176"/>
+            <rect class="s-tint" x="70" y="138" width="60" height="58" rx="5"/>
+          </svg>
+          <span class="tag">The bag</span>
+        </button>
+
+        <button class="item i-camera" data-item="camera" aria-pressed="false">
+          <svg viewBox="0 0 200 140" aria-hidden="true">
+            <path class="f-alud" d="M70 32L80 12H124L134 32Z"/>
+            <rect class="f-alud" x="150" y="20" width="26" height="12" rx="3"/>
+            <rect class="f-ink" x="6" y="30" width="188" height="104" rx="12"/>
+            <path class="f-alu" d="M18 30H182Q194 30 194 42V56H6V42Q6 30 18 30Z"/>
+            <rect class="f-slate" x="24" y="38" width="24" height="12" rx="3"/>
+            <circle class="f-alud" cx="100" cy="86" r="40"/>
+            <circle class="f-slate" cx="100" cy="86" r="31"/>
+            <circle class="f-ink" cx="100" cy="86" r="18"/>
+            <circle class="f-tint" cx="108" cy="78" r="4"/>
+          </svg>
+          <span class="tag">Camera</span>
+        </button>
+
+        <button class="item i-airpods" data-item="airpods" aria-pressed="false">
+          <svg viewBox="0 0 100 110" aria-hidden="true">
+            <rect class="f-bg" x="8" y="6" width="84" height="98" rx="25"/>
+            <rect class="s-alud" x="8" y="6" width="84" height="98" rx="25"/>
+            <path class="s-alud" d="M8 40H92"/>
+            <circle class="f-blue" cx="50" cy="57" r="3"/>
+          </svg>
+          <span class="tag">AirPods</span>
+        </button>
+
+        <button class="item i-notebook" data-item="notebook" aria-pressed="false">
+          <svg viewBox="0 0 160 244" aria-hidden="true">
+            <path class="f-blue" d="M70 210V240L76 233L82 240V210Z"/>
+            <rect class="f-navy" x="6" y="4" width="148" height="212" rx="7"/>
+            <rect class="f-blue" x="124" y="4" width="7" height="212"/>
+            <path class="s-tint" opacity=".35" d="M22 4V216"/>
+            <rect class="s-tint" x="42" y="40" width="62" height="30" rx="2"/>
+          </svg>
+          <span class="tag">Notebook</span>
+        </button>
+
+        <button class="item i-phone" data-item="phone" aria-pressed="false">
+          <svg viewBox="0 0 100 200" aria-hidden="true">
+            <rect class="f-ink" x="4" y="4" width="92" height="192" rx="17"/>
+            <rect class="f-slate" x="10" y="10" width="80" height="180" rx="12"/>
+            <g class="glow">
+              <rect class="f-tint" x="10" y="10" width="80" height="180" rx="12"/>
+              <rect class="f-bg" x="17" y="66" width="66" height="34" rx="8"/>
+              <rect class="f-blue" x="25" y="77" width="34" height="4" rx="2"/>
+              <rect class="f-alud" x="25" y="86" width="48" height="3" rx="1.5"/>
+            </g>
+            <rect class="f-ink" x="38" y="17" width="24" height="7" rx="3.5"/>
+          </svg>
+          <span class="tag">Phone</span>
+        </button>
+
+        <button class="item i-passport" data-item="passport" aria-pressed="false">
+          <svg viewBox="0 0 120 168" aria-hidden="true">
+            <rect class="f-navy" x="4" y="4" width="112" height="160" rx="8"/>
+            <circle class="s-tint" cx="60" cy="70" r="23"/>
+            <ellipse class="s-tint" cx="60" cy="70" rx="10" ry="23"/>
+            <path class="s-tint" d="M37 70H83"/>
+            <rect class="f-tint" x="30" y="112" width="60" height="5" rx="2.5"/>
+            <rect class="f-tint" x="40" y="124" width="40" height="4" rx="2"/>
+          </svg>
+          <span class="tag">Passport</span>
+        </button>
+
+        <button class="item i-card" data-item="card" aria-pressed="false">
+          <svg viewBox="0 0 120 210" aria-hidden="true">
+            <path class="s-blue" stroke-width="5" d="M50 70C8 12 112 -8 70 70"/>
+            <rect class="f-alud" x="51" y="62" width="18" height="16" rx="3"/>
+            <rect class="f-bg" x="14" y="74" width="92" height="130" rx="8"/>
+            <rect class="s-alud" x="14" y="74" width="92" height="130" rx="8"/>
+            <rect class="f-tint" x="30" y="92" width="34" height="40" rx="3"/>
+            <rect class="f-blue" x="30" y="144" width="60" height="5" rx="2.5"/>
+            <rect class="f-alud" x="30" y="156" width="44" height="5" rx="2.5"/>
+            <rect class="f-alud" x="30" y="178" width="28" height="5" rx="2.5"/>
+          </svg>
+          <span class="tag">Student ID</span>
+        </button>
+
+        <button class="item i-pens" data-item="pens" aria-pressed="false">
+          <svg viewBox="0 0 220 70" aria-hidden="true">
+            <rect class="f-blue" x="8" y="12" width="172" height="11" rx="5.5"/>
+            <path class="f-ink" d="M180 12L206 17.5L180 23Z"/>
+            <rect class="f-alud" x="14" y="9" width="52" height="3.5" rx="1.75"/>
+            <g transform="rotate(5 110 50)">
+              <rect class="f-ink" x="20" y="44" width="176" height="11" rx="5.5"/>
+              <rect class="f-alud" x="20" y="43" width="62" height="13" rx="6.5"/>
+              <path class="f-alud" d="M196 44L214 49.5L196 55Z"/>
+            </g>
+          </svg>
+          <span class="tag">Pens</span>
+        </button>
+
+        <button class="item i-sticks" data-item="sticks" aria-pressed="false">
+          <svg viewBox="0 0 230 46" aria-hidden="true">
+            <path class="f-wood" d="M4 7L226 14V19L4 17Z"/>
+            <path class="f-wood" d="M6 39L226 31V26L6 29Z"/>
+          </svg>
+          <span class="tag">Chopsticks</span>
+        </button>
+        <div class="polaroid p1" aria-hidden="true" hidden><img src="img/macau.jpg" alt="" style="object-position:55% 62%"></div>
+        <div class="polaroid p2" aria-hidden="true" hidden><img src="img/field.jpg" alt="" style="object-position:70% 55%"></div>
+        <div class="polaroid p3" aria-hidden="true" hidden><img src="img/waygate.jpg" alt="" style="object-position:50% 40%"></div>
+        <div class="fx" aria-hidden="true"><div class="flash"></div></div>
+        <aside class="win" id="win" role="status" aria-label="Thank you" hidden>
+          <span class="string" aria-hidden="true"></span>
+          <div class="lug">
+            <span class="hole" aria-hidden="true"></span>
+            <div class="note">
+              <span class="mono">From Jessie</span>
+              <h3>You packed it all.</h3>
+              <p>Thanks for going through my things. You now know me better than my résumé does.</p>
+              <p>If you'd like to talk, I'm at Jessie.Li0428@gmail.com.</p>
+              <p><a href="#yes">See my experience &darr;</a></p>
+            </div>
+            <div class="win-actions">
+              <button class="next" id="spill-again" type="button">Spill it all out again</button>
+            </div>
+          </div>
+        </aside>
+      </div>
+
+      <aside class="notes" aria-live="polite">
+        <article class="note" id="note-laptop" hidden>
+          <span class="mono file">laptop.txt</span>
+          <h3>It survived the drop.</h3>
+          <p>This is where the work happens. The projects I'd most like you to see are Signiverse, SideQuest and MediMinder. Each one is further down the page.</p>
+          <p><a href="#work">See the projects &darr;</a></p>
+        </article>
+
+        <article class="note" id="note-bag">
+          <span class="mono file">bag.txt</span>
+          <h3>I carry this every day.</h3>
+          <p>Everything on the floor came out of it. Click something to read about it.</p>
+          <p>Once you've read an item you can move it. Drag it back into the bag, and when all nine are packed there's a note from me.</p>
+          <p id="bag-progress">Nothing packed yet.</p>
+        </article>
+
+        <article class="note" id="note-camera" hidden>
+          <span class="mono file">camera.txt</span>
+          <h3>I like cameras. I'm no expert.</h3>
+          <p>I bring one along anyway. Click the camera again and it takes another photo. A few frames I like:</p>
+          <div class="frames">
+            <div class="frame has-photo"><img src="img/macau.jpg" alt="Jessie crouching on wide stone steps below a ruined stone church front, date-stamped 27/06/2026" loading="lazy"></div>
+            <div class="frame has-photo"><img src="img/field.jpg" alt="Jessie taking a selfie in a grassy field, with groups of volunteers in green shirts behind her" loading="lazy"></div>
+            <div class="frame">Your photo</div>
+          </div>
+        </article>
+
+        <article class="note" id="note-airpods" hidden>
+          <span class="mono file">airpods.txt</span>
+          <h3>There's music on most of the day.</h3>
+          <div class="eq" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>
+          <p>On repeat right now: "Petal" by Ariana Grande.</p>
+        </article>
+
+        <article class="note" id="note-notebook" hidden>
+          <span class="mono file">notebook.txt</span>
+          <h3>MIS, after two years of computer science.</h3>
+          <p>I started in computer science and stayed for two years. I learned that writing software, front end and back, is not the work I enjoy. So I changed majors.</p>
+          <p>What I like about MIS is talking with people, getting to know them, and taking something from nothing to finished.</p>
+        </article>
+
+        <article class="note" id="note-phone" hidden>
+          <span class="mono file">phone.txt</span>
+          <h3>How to reach me.</h3>
+          <p>A message is the fastest way.</p>
+          <p>Email: Jessie.Li0428@gmail.com<br>LinkedIn: <a href="https://www.linkedin.com/in/jessie-li-rit" target="_blank" rel="noopener">linkedin.com/in/jessie-li-rit</a></p>
+        </article>
+
+        <article class="note" id="note-passport" hidden>
+          <span class="mono file">passport.txt</span>
+          <h3>Mostly empty pages.</h3>
+          <p>I've lived in the States almost my whole life. I want to see what's out there and how other people see things.</p>
+          <div class="visa" role="img" aria-label="A passport page with one stamp, Shanghai, and three empty spaces for Paris, Milan and Basel.">
+            <div class="stamped">
+              <svg viewBox="0 0 120 120" aria-hidden="true">
+                <circle class="ink" cx="60" cy="60" r="54" stroke-width="3.5"/>
+                <circle class="ink" cx="60" cy="60" r="46" stroke-width="1.5"/>
+                <text class="ink-text" x="60" y="42" text-anchor="middle" font-size="9">ARRIVED</text>
+                <text class="ink-text" x="60" y="65" text-anchor="middle" font-size="14.5">SHANGHAI</text>
+                <path class="ink" stroke-width="1.5" d="M30 74H90"/>
+                <text class="ink-text" x="60" y="88" text-anchor="middle" font-size="8.5">SUMMER 2026</text>
+              </svg>
+            </div>
+            <div class="empty e1">Paris<small>not yet</small></div>
+            <div class="empty e2">Milan<small>not yet</small></div>
+            <div class="empty e3">Basel<small>not yet</small></div>
+          </div>
+        </article>
+
+        <article class="note" id="note-card" hidden>
+          <span class="mono file">student-id.txt</span>
+          <h3>A summer at Fudan University.</h3>
+          <p>Last summer I studied abroad at Fudan in Shanghai. It was a lot of fun, and it made me want to see more of the world.</p>
+          <p>What stuck with me most is the people I met. We were all from different parts of the world.</p>
+        </article>
+
+        <article class="note" id="note-pens" hidden>
+          <span class="mono file">pens.txt</span>
+          <h3>I write things down.</h3>
+          <p>A notebook and a couple of pens come with me everywhere.</p>
+          <p>On the page right now: find a co-op, and go on a hike before winter hits.</p>
+        </article>
+
+        <article class="note" id="note-sticks" hidden>
+          <span class="mono file">chopsticks.txt</span>
+          <h3>I'll try anything once.</h3>
+          <p>I love to eat, and I usually order the thing I haven't had before.</p>
+          <dl class="receipt">
+            <div><dt>Crab rice</dt><dd>Ren He Guan 人和馆, Shanghai</dd></div>
+            <div><dt>Yellow fish noodles</dt><dd>Huang yu mian, Shanghai</dd></div>
+            <div><dt>Hot pot</dt><dd>Anywhere</dd></div>
+            <div><dt>Dubai chewy cookie</dt><dd>Dujjonku, whenever I find one</dd></div>
+            <div class="total"><dt>Total</dt><dd>Always room for more</dd></div>
+          </dl>
+        </article>
+
+        <div class="note-actions">
+          <button class="next" id="put-away" type="button" hidden>Put it back in the bag</button>
+          <button class="next" id="next-item" type="button">Next item &rarr;</button>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <section class="yes" id="yes">
+    <div class="floor-head">
+      <span class="mono">Experience, in order</span>
+      <h2>Things I said <em>yes</em> to.</h2>
+      <div class="legend"><span class="chip"><i style="--c:var(--gold)"></i>Award</span><span class="chip"><i style="--c:var(--green)"></i>Work</span><span class="chip"><i style="--c:var(--blue)"></i>School</span><span class="chip"><i style="--c:var(--coral)"></i>Community</span></div>
+    </div>
+    <ol class="yes-list">
+      <li>
+        <span class="mono yes-when">September 2023</span>
+        <span class="yes-dot" aria-hidden="true"></span>
+        <div class="yes-body">
+          <h3><button class="yes-toggle" type="button" aria-expanded="true" aria-controls="yd-1"><span class="yes-title"><em>Yes</em> to my first hackathon</span> <span class="chip"><i style="--c:var(--gold)"></i>1st place</span> <span class="yes-plus" aria-hidden="true"></span></button></h3>
+          <div class="yes-detail" id="yd-1">
+            <span class="mono">Signiverse, 1st place</span>
+            <p>I signed up before I really knew how to code. I landed in a great group of people, and we won 1st place among 15 teams.</p>
+          </div>
+        </div>
+      </li>
+      <li>
+        <span class="mono yes-when">Summer 2024</span>
+        <span class="yes-dot" aria-hidden="true"></span>
+        <div class="yes-body">
+          <h3><button class="yes-toggle" type="button" aria-expanded="true" aria-controls="yd-2"><span class="yes-title"><em>Yes</em> to a summer of data science</span> <span class="chip"><i style="--c:var(--blue)"></i>Scholar</span> <span class="yes-plus" aria-hidden="true"></span></button></h3>
+          <div class="yes-detail" id="yd-2">
+            <span class="mono">Kode with Klossy, New York City</span>
+            <p>I analyzed habit and productivity data in Python and SQL, then presented what we found alongside 20+ other scholars.</p>
+          </div>
+        </div>
+      </li>
+      <li>
+        <span class="mono yes-when">Aug 2024 &ndash; Present</span>
+        <span class="yes-dot" aria-hidden="true"></span>
+        <div class="yes-body">
+          <h3><button class="yes-toggle" type="button" aria-expanded="true" aria-controls="yd-3"><span class="yes-title"><em>Yes</em> to running events</span> <span class="chip"><i style="--c:var(--green)"></i>Work</span> <span class="yes-plus" aria-hidden="true"></span></button></h3>
+          <div class="yes-detail" id="yd-3">
+            <span class="mono">Events Assistant, RIT Alumni House &amp; University Gallery</span>
+            <p>I help plan and run alumni and gallery events, and handle the front desk, check-ins and guest questions.</p>
+          </div>
+        </div>
+      </li>
+      <li>
+        <span class="mono yes-when">Jul 2025 &ndash; Present</span>
+        <span class="yes-dot" aria-hidden="true"></span>
+        <div class="yes-body">
+          <h3><button class="yes-toggle" type="button" aria-expanded="true" aria-controls="yd-4"><span class="yes-title"><em>Yes</em> to a year of applied AI</span> <span class="chip"><i style="--c:var(--blue)"></i>Fellowship</span> <span class="yes-plus" aria-hidden="true"></span></button></h3>
+          <div class="yes-detail" id="yd-4">
+            <span class="mono">Break Through Tech AI Fellow, Cornell Tech</span>
+            <p>Nine weeks of Python, data science and machine learning, then an industry-sponsored project with a team of fellows.</p>
+          </div>
+        </div>
+      </li>
+      <li>
+        <span class="mono yes-when">Fall 2025</span>
+        <span class="yes-dot" aria-hidden="true"></span>
+        <div class="yes-body">
+          <h3><button class="yes-toggle" type="button" aria-expanded="true" aria-controls="yd-5"><span class="yes-title"><em>Yes</em> to changing my major</span> <span class="chip"><i style="--c:var(--blue)"></i>School</span> <span class="yes-plus" aria-hidden="true"></span></button></h3>
+          <div class="yes-detail" id="yd-5">
+            <span class="mono">Computer science to MIS</span>
+            <p>After two years of computer science I admitted that writing software wasn't the part I enjoyed, and I moved to MIS.</p>
+          </div>
+        </div>
+      </li>
+      <li>
+        <span class="mono yes-when">October 2025</span>
+        <span class="yes-dot" aria-hidden="true"></span>
+        <div class="yes-body">
+          <h3><button class="yes-toggle" type="button" aria-expanded="true" aria-controls="yd-6"><span class="yes-title"><em>Yes</em> to joining a professional fraternity</span> <span class="chip"><i style="--c:var(--coral)"></i>Community</span> <span class="yes-plus" aria-hidden="true"></span></button></h3>
+          <div class="yes-detail" id="yd-6">
+            <span class="mono">Delta Sigma Pi, now VP of Pledge Education</span>
+            <p>I joined to try something new. Now I teach new pledges what we do and how it can help them grow. It's building my public speaking, and I get to come up with fun ways to teach.</p>
+          </div>
+        </div>
+      </li>
+      <li>
+        <span class="mono yes-when">Jan &ndash; Jul 2026</span>
+        <span class="yes-dot" aria-hidden="true"></span>
+        <div class="yes-body">
+          <h3><button class="yes-toggle" type="button" aria-expanded="true" aria-controls="yd-7"><span class="yes-title"><em>Yes</em> to my first corporate job</span> <span class="chip"><i style="--c:var(--green)"></i>Work</span> <span class="yes-plus" aria-hidden="true"></span></button></h3>
+          <div class="yes-detail" id="yd-7">
+            <span class="mono">Product Management Intern, Waygate Technologies (Baker Hughes)</span>
+            <p>I analyzed two years of sales data, defined requirements for five internal Power Apps, and organized a global training event for 150+ sales professionals. A great manager taught me a lot of soft skills.</p>
+            <img class="yes-photo" src="img/waygate.jpg" alt="Jessie and five colleagues standing outside the Waygate Technologies building" width="1200" height="800" loading="lazy">
+          </div>
+        </div>
+      </li>
+      <li>
+        <span class="mono yes-when">Summer 2026</span>
+        <span class="yes-dot" aria-hidden="true"></span>
+        <div class="yes-body">
+          <h3><button class="yes-toggle" type="button" aria-expanded="true" aria-controls="yd-8"><span class="yes-title"><em>Yes</em> to a summer in Shanghai</span> <span class="chip"><i style="--c:var(--blue)"></i>Study abroad</span> <span class="yes-plus" aria-hidden="true"></span></button></h3>
+          <div class="yes-detail" id="yd-8">
+            <span class="mono">Fudan University</span>
+            <p>I studied abroad at one of China's top universities, with people from all over the world. It's the reason travel is now the goal.</p>
+          </div>
+        </div>
+      </li>
+      <li class="is-next">
+        <span class="mono yes-when">January 2027</span>
+        <span class="yes-dot" aria-hidden="true"></span>
+        <div class="yes-body">
+          <h3><button class="yes-toggle" type="button" aria-expanded="true" aria-controls="yd-9"><span class="yes-title">The next <em>yes</em></span> <span class="chip"><i style="--c:var(--green)"></i>Open</span> <span class="yes-plus" aria-hidden="true"></span></button></h3>
+          <div class="yes-detail" id="yd-9">
+            <span class="mono">Open</span>
+            <p>I want to be part of something that makes a difference, in my own way. If that sounds like your team, my email is at the bottom of this page.</p>
+          </div>
+        </div>
+      </li>
+    </ol>
+  </section>
+
+  <section class="block" id="tools">
+    <span class="mono">Tools</span>
+    <div class="block-body">
+      <div class="stk-legend mono" aria-hidden="true">
+        <span class="g-data"><i></i>Data and analysis</span>
+        <span class="g-product"><i></i>Product and design</span>
+        <span class="g-code"><i></i>Code</span>
+        <span class="g-daily"><i></i>Everyday tools</span>
+      </div>
+      <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+        <symbol id="ic-data" viewBox="0 0 24 24"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></symbol>
+        <symbol id="ic-product" viewBox="0 0 24 24"><path d="M4 20l4-1L19 8a2.1 2.1 0 0 0-3-3L5 16l-1 4zM14 7l3 3"/></symbol>
+        <symbol id="ic-code" viewBox="0 0 24 24"><path d="M8 7l-5 5 5 5M16 7l5 5-5 5"/></symbol>
+        <symbol id="ic-daily" viewBox="0 0 24 24"><path d="M8 12l7-7a3 3 0 0 1 4 4l-9 9a5 5 0 0 1-7-7l8-8"/></symbol>
+      </svg>
+      <div class="lid-wrap">
+      <div class="lid-art" role="group" aria-label="The tools I use, as stickers on my laptop">
+        <button class="stk g-data sz-l sh-pill" type="button" aria-pressed="true" style="--x:4.31%; --y:7.14%; --rot:-6deg" data-group="Data and analysis" data-proof="Two years of sales data at Waygate."><svg aria-hidden="true" viewBox="0 0 24 24"><use href="#ic-data"/></svg><span>Excel</span></button>
+        <button class="stk g-product sz-l sh-rect" type="button" aria-pressed="false" style="--x:23.92%; --y:6.07%; --rot:4deg" data-group="Product and design" data-proof="Requirements for five internal apps at Waygate."><svg aria-hidden="true" viewBox="0 0 24 24"><use href="#ic-product"/></svg><span>Power Apps</span></button>
+        <button class="stk g-product sz-l sh-pill" type="button" aria-pressed="false" style="--x:53.83%; --y:8.93%; --rot:-3deg" data-group="Product and design" data-proof="In class."><svg aria-hidden="true" viewBox="0 0 24 24"><use href="#ic-product"/></svg><span>Figma</span></button>
+        <button class="stk g-data sz-l sh-pill" type="button" aria-pressed="false" style="--x:74.88%; --y:6.79%; --rot:5deg" data-group="Data and analysis" data-proof="At Waygate and in class, and for data science at Kode with Klossy and Break Through Tech."><svg aria-hidden="true" viewBox="0 0 24 24"><use href="#ic-data"/></svg><span>Python</span></button>
+        <button class="stk g-data sz-m sh-pill" type="button" aria-pressed="false" style="--x:5.26%; --y:28.21%; --rot:5deg" data-group="Data and analysis" data-proof="In class."><svg aria-hidden="true" viewBox="0 0 24 24"><use href="#ic-data"/></svg><span>Tableau</span></button>
+        <button class="stk g-data sz-m sh-rect" type="button" aria-pressed="false" style="--x:23.92%; --y:26.43%; --rot:-7deg" data-group="Data and analysis" data-proof="In class."><svg aria-hidden="true" viewBox="0 0 24 24"><use href="#ic-data"/></svg><span>Power BI</span></button>
+        <button class="stk g-product sz-m sh-pill" type="button" aria-pressed="false" style="--x:43.54%; --y:28.93%; --rot:3deg" data-group="Product and design" data-proof="In class."><svg aria-hidden="true" viewBox="0 0 24 24"><use href="#ic-product"/></svg><span>Canva</span></button>
+        <button class="stk g-data sz-m sh-circle" type="button" aria-pressed="false" style="--x:61.72%; --y:26.07%; --rot:8deg" data-group="Data and analysis" data-proof="Habit and productivity data at Kode with Klossy."><span>SQL</span></button>
+        <button class="stk g-code sz-m sh-pill" type="button" aria-pressed="false" style="--x:74.88%; --y:28.57%; --rot:-4deg" data-group="Code" data-proof="SideQuest."><svg aria-hidden="true" viewBox="0 0 24 24"><use href="#ic-code"/></svg><span>React</span></button>
+        <button class="stk g-code sz-s sh-circle" type="button" aria-pressed="false" style="--x:4.78%; --y:46.79%; --rot:-8deg" data-group="Code" data-proof="In class."><span>C</span></button>
+        <button class="stk g-code sz-m sh-pill" type="button" aria-pressed="false" style="--x:16.03%; --y:49.64%; --rot:4deg" data-group="Code" data-proof="In class."><svg aria-hidden="true" viewBox="0 0 24 24"><use href="#ic-code"/></svg><span>JavaScript</span></button>
+        <button class="stk g-code sz-m sh-rect" type="button" aria-pressed="false" style="--x:37.32%; --y:47.50%; --rot:-5deg" data-group="Code" data-proof="SideQuest."><svg aria-hidden="true" viewBox="0 0 24 24"><use href="#ic-code"/></svg><span>Next.js</span></button>
+        <button class="stk g-code sz-m sh-pill" type="button" aria-pressed="false" style="--x:54.07%; --y:50.36%; --rot:6deg" data-group="Code" data-proof="At Waygate, and for Signiverse."><svg aria-hidden="true" viewBox="0 0 24 24"><use href="#ic-code"/></svg><span>HTML &amp; CSS</span></button>
+        <button class="stk g-code sz-m sh-pill" type="button" aria-pressed="false" style="--x:78.23%; --y:48.21%; --rot:-3deg" data-group="Code" data-proof="At Waygate, and in class."><svg aria-hidden="true" viewBox="0 0 24 24"><use href="#ic-code"/></svg><span>Java</span></button>
+        <button class="stk g-product sz-m sh-circle" type="button" aria-pressed="false" style="--x:5.98%; --y:66.43%; --rot:6deg" data-group="Product and design" data-proof="At Waygate, and in class."><span>SAP</span></button>
+        <button class="stk g-daily sz-m sh-pill" type="button" aria-pressed="false" style="--x:17.94%; --y:69.64%; --rot:-4deg" data-group="Everyday tools" data-proof="At Waygate, and in class."><svg aria-hidden="true" viewBox="0 0 24 24"><use href="#ic-daily"/></svg><span>PowerPoint</span></button>
+        <button class="stk g-daily sz-s sh-pill" type="button" aria-pressed="false" style="--x:39.95%; --y:67.86%; --rot:5deg" data-group="Everyday tools" data-proof="At Waygate, and in class."><svg aria-hidden="true" viewBox="0 0 24 24"><use href="#ic-daily"/></svg><span>Word</span></button>
+        <button class="stk g-daily sz-m sh-rect" type="button" aria-pressed="false" style="--x:53.59%; --y:70.36%; --rot:-6deg" data-group="Everyday tools" data-proof="In class."><svg aria-hidden="true" viewBox="0 0 24 24"><use href="#ic-daily"/></svg><span>GitHub</span></button>
+        <button class="stk g-code sz-m sh-rect" type="button" aria-pressed="false" style="--x:72.97%; --y:68.21%; --rot:7deg" data-group="Code" data-proof="In class."><svg aria-hidden="true" viewBox="0 0 24 24"><use href="#ic-code"/></svg><span>Angular</span></button>
+        <button class="stk g-daily sz-s sh-pill" type="button" aria-pressed="false" style="--x:28.23%; --y:85.00%; --rot:3deg" data-group="Everyday tools" data-proof="In class."><svg aria-hidden="true" viewBox="0 0 24 24"><use href="#ic-daily"/></svg><span>VS Code</span></button>
+        <button class="stk g-daily sz-s sh-pill" type="button" aria-pressed="false" style="--x:49.04%; --y:86.07%; --rot:-5deg" data-group="Everyday tools" data-proof="In class."><svg aria-hidden="true" viewBox="0 0 24 24"><use href="#ic-daily"/></svg><span>IntelliJ</span></button>
+      </div>
+      </div>
+      <div class="stk-caption" aria-live="polite">
+        <p class="tape mono"><span id="stk-name">Excel</span> <b aria-hidden="true">—</b> <span id="stk-group">Data and analysis</span> <b aria-hidden="true">—</b> <span id="stk-proof">Two years of sales data at Waygate</span></p>
+        <span class="mono stk-hint">click a sticker</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" id="work">
+    <span class="mono">Projects</span>
+    <div class="block-body">
+      <div class="slots">
+        <div class="slot">
+          <span class="chip"><i style="--c:var(--gold)"></i>1st place, 15 teams</span>
+          <h3>Signiverse</h3>
+          <p>An AI-powered platform that makes learning American Sign Language more accessible, with interactive lessons, game-like practice and real-time feedback.</p>
+          <span class="mono tools">Monaca / AI model / HTML / CSS</span>
+        </div>
+        <div class="slot">
+          <span class="chip"><i style="--c:var(--blue)"></i>Built in 48 hours</span>
+          <h3>SideQuest</h3>
+          <p>A financial management platform for people with more than one income stream. It tracks income, expenses and cash flow, with dashboards built on live transaction data.</p>
+          <span class="mono tools">React / Next.js / Nessie API / Gemini API</span>
+        </div>
+        <div class="slot">
+          <span class="chip"><i style="--c:var(--green)"></i>iOS app</span>
+          <h3>MediMinder</h3>
+          <p>A medication reminder you can't dismiss until you scan a QR code, so the dose gets taken and not just swiped away.</p>
+          <span class="mono tools">Swift / SwiftUI / CodeScanner</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" id="todo">
+    <span class="mono">To do</span>
+    <div class="block-body">
+      <ul class="todo">
+        <li><input type="checkbox" id="todo-1" checked><label for="todo-1">Say yes to something new</label></li>
+        <li><input type="checkbox" id="todo-2"><label for="todo-2">Fill the passport (one stamp so far)</label></li>
+        <li><input type="checkbox" id="todo-3"><label for="todo-3">Learn what every button on my camera does</label></li>
+        <li><input type="checkbox" id="todo-4"><label for="todo-4">Find a Dubai chewy cookie in Rochester</label></li>
+        <li><input type="checkbox" id="todo-5"><label for="todo-5">Try every hot pot place within driving distance</label></li>
+        <li><input type="checkbox" id="todo-6"><label for="todo-6">Go on a hike before winter hits</label></li>
+      </ul>
+    </div>
+  </section>
+
+  <footer class="block" id="contact">
+    <span class="mono">Say hi</span>
+    <div class="block-body">
+      <div class="contact">
+        <span>Jessie.Li0428@gmail.com</span>
+        <a href="https://www.linkedin.com/in/jessie-li-rit" target="_blank" rel="noopener">linkedin.com/in/jessie-li-rit</a>
+      </div>
+    </div>
+  </footer>
+
+</main>
+
+<script>
+(function(){
+  function q(s){ return document.querySelector(s); }
+  function clamp(v,a,b){ return Math.max(a, Math.min(b, v)); }
+  function seg(p,a,b){ return clamp((p-a)/(b-a), 0, 1); }
+  function lerp(a,b,t){ return a + (b-a)*t; }
+  function inOut(t){ return t<.5 ? 4*t*t*t : 1 - Math.pow(-2*t+2,3)/2; }
+  function outBack(t){ var c1=1.70158, c3=c1+1; return 1 + c3*Math.pow(t-1,3) + c1*Math.pow(t-1,2); }
+
+  /* ----- the floor: click a thing to read it, then it can be moved and packed ----- */
+  var items = Array.prototype.slice.call(document.querySelectorAll('.item'));
+  var panel = q('.notes'), notes = Array.prototype.slice.call(panel.querySelectorAll('.note'));
+  var calm = !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+  var floorEl = q('.floor'), win = q('#win');
+  var putAway = q('#put-away'), nextBtn = q('#next-item'), spillAgain = q('#spill-again'), spillAllBtn = q('#spill-all');
+  var countEl = q('#pack-count'), bagProgress = q('#bag-progress');
+  var bag = q('.item[data-item="bag"]'), bagI = items.indexOf(bag), bagTag = bag.querySelector('.tag');
+  var names = items.map(function(it){ return it.querySelector('.tag').textContent; });
+  var polas = Array.prototype.slice.call(document.querySelectorAll('.polaroid')), flash = q('.flash'), shots = 0;
+  var offs = items.map(function(){ return {x:0, y:0}; }), topZ = 5;
+  var read = items.map(function(){ return false; }), packed = items.map(function(){ return false; });
+  var TOTAL = items.length - 1, current = bagI, closing = null;
+
+  /* where each thing has been dragged to, as a fraction of the floor */
+  function place(i){
+    items[i].style.translate = (offs[i].x*floorEl.clientWidth) + 'px ' + (offs[i].y*floorEl.clientHeight) + 'px';
+  }
+  function nudge(i, px, py){
+    var it = items[i], fw = floorEl.clientWidth, fh = floorEl.clientHeight;
+    offs[i].x = clamp(px, -it.offsetLeft, fw - it.offsetWidth - it.offsetLeft)/fw;
+    offs[i].y = clamp(py, -it.offsetTop, fh - it.offsetHeight - 22 - it.offsetTop)/fh;
+    place(i);
+  }
+  function centre(el){
+    var i = items.indexOf(el), ox = 0, oy = 0;
+    if (i >= 0){ ox = offs[i].x*floorEl.clientWidth; oy = offs[i].y*floorEl.clientHeight; }
+    return [el.offsetLeft + el.offsetWidth/2 + ox, el.offsetTop + el.offsetHeight/2 + oy];
+  }
+  function isPhone(){ return !!(window.matchMedia && window.matchMedia('(max-width:700px)').matches); }
+  function packedCount(){ return packed.filter(Boolean).length; }
+  function refresh(){
+    var n = packedCount();
+    countEl.textContent = n + ' of ' + TOTAL + ' packed';
+    bagTag.textContent = n ? 'The bag · ' + n + ' of ' + TOTAL : names[bagI];
+    bagProgress.textContent = n ? n + ' of ' + TOTAL + ' packed so far.' : 'Nothing packed yet.';
+    spillAllBtn.hidden = n === 0;
+    panel.hidden = n === TOTAL;   /* nothing left to read once it's all packed */
+    bag.style.setProperty('--full', (1 + n*.022).toFixed(3));   /* the bag gets fuller */
+  }
+
+  /* clicking a thing shows its note in the panel, and unlocks moving it */
+  function pick(i, reveal){
+    current = i;
+    var it = items[i];
+    items.forEach(function(b, k){ b.setAttribute('aria-pressed', k === i ? 'true' : 'false'); });
+    notes.forEach(function(n){ n.hidden = n.id !== 'note-' + it.dataset.item; });
+    read[i] = true; it.classList.add('is-read');
+    putAway.hidden = i === bagI || packed[i];
+    if (reveal){
+      var r = panel.getBoundingClientRect();
+      if (r.top > window.innerHeight - 120) panel.scrollIntoView({block:'nearest', behavior:calm ? 'auto' : 'smooth'});
+    }
+  }
+
+  /* the thank-you window, shown once everything is packed */
+  /* the tag hangs from the bag like a weight on a string: a pendulum that swings,
+     loses energy and comes to rest pointing straight down */
+  var swing = {a:0, v:0, tx:0, ty:0, sc:1, op:1, raf:0, last:0, len:260};
+  function drawTag(){
+    win.style.transform = 'translate(' + swing.tx + 'px,' + swing.ty + 'px) rotate(' + swing.a.toFixed(2) + 'deg) scale(' + swing.sc + ')';
+    win.style.opacity = swing.op;
+  }
+  function stepTag(now){
+    swing.raf = 0;
+    if (win.hidden) return;
+    var dt = clamp((now - swing.last)/1000, .001, .034); swing.last = now;
+    var rad = swing.a*Math.PI/180;
+    swing.v += (-34*Math.sin(rad) - 2.2*swing.v)*dt;   /* gravity pulls it back, air slows it down */
+    rad += swing.v*dt;
+    swing.a = clamp(rad*180/Math.PI, -85, 85);
+    if (Math.abs(swing.a) < .06 && Math.abs(swing.v) < .012){ swing.a = 0; swing.v = 0; drawTag(); return; }
+    drawTag();
+    swing.raf = requestAnimationFrame(stepTag);
+  }
+  function wakeTag(){
+    if (swing.raf || calm || win.hidden) return;
+    swing.last = performance.now();
+    swing.raf = requestAnimationFrame(stepTag);
+  }
+  /* when the bag is carried sideways the tag lags behind it, then swings back */
+  function moveTag(tx, ty, sc, op){
+    var dx = tx - swing.tx;
+    swing.tx = tx; swing.ty = ty; swing.sc = sc; swing.op = op;
+    if (!calm){
+      swing.len = Math.max(120, win.offsetHeight*.6);
+      swing.a = clamp(swing.a + (dx/swing.len)*180/Math.PI, -70, 70);
+    }
+    drawTag(); wakeTag();
+  }
+  function positionWin(){
+    win.style.left = (centre(bag)[0] - win.offsetWidth/2) + 'px';
+    win.style.top = centre(bag)[1] + 'px';
+  }
+  function openThanks(){
+    if (closing){ closing.onfinish = null; closing.cancel(); closing = null; }
+    var fw = floorEl.clientWidth, fh = floorEl.clientHeight, cs = getComputedStyle(bag);
+    var full = parseFloat(cs.getPropertyValue('--full')) || 1, r0 = (cs.getPropertyValue('--r') || '0deg').trim();
+    var from = (offs[bagI].x*fw) + 'px ' + (offs[bagI].y*fh) + 'px';
+    /* the full bag comes to the top middle of the floor and stands up straight... */
+    bag.classList.add('is-done'); bag.style.zIndex = ++topZ;
+    bag.style.setProperty('--r', '0deg');
+    var mid = Math.min(floorEl.parentNode.clientWidth/2, fw - win.offsetWidth/2 - 4);   /* middle of the section, now the panel is gone */
+    nudge(bagI, mid - bag.offsetWidth/2 - bag.offsetLeft, fh*.03 + (full - 1)*bag.offsetHeight/2 - bag.offsetTop);
+    var to = (offs[bagI].x*fw) + 'px ' + (offs[bagI].y*fh) + 'px';
+    /* ...and a luggage tag on a string swings out from behind it */
+    win.style.setProperty('--string', (bag.offsetHeight*full/2 + 26) + 'px');
+    win.hidden = false;
+    swing.a = calm ? 0 : -68; swing.v = 0; swing.tx = 0; swing.ty = 0; swing.sc = 1; swing.op = 1;
+    drawTag();
+    positionWin();
+    /* make room under the floor if the tag hangs past it */
+    var over = win.offsetTop + win.offsetHeight - fh;
+    floorEl.style.marginBottom = over > 0 ? (over + 28) + 'px' : '';
+    if (!calm && win.animate){
+      bag.animate([{translate:from}, {translate:to}], {duration:520, easing:'cubic-bezier(.3,1.3,.5,1)'});
+      bag.querySelector('svg').animate([{transform:'rotate(' + r0 + ') scale(' + full + ')'}, {transform:'rotate(0deg) scale(' + full + ')'}], {duration:520, easing:'cubic-bezier(.3,1.4,.5,1)'});
+      /* held out to one side, then let go once the bag has arrived */
+      win.animate([{opacity:0}, {opacity:1}], {duration:260, delay:430, easing:'ease-out', fill:'backwards'});
+      setTimeout(wakeTag, 430);
+    }
+    setTimeout(function(){
+      if (!win.hidden && win.scrollIntoView) win.scrollIntoView({block:'nearest', behavior:calm ? 'auto' : 'smooth'});
+    }, calm ? 0 : 900);
+  }
+  function closeWin(){
+    if (win.hidden || closing) return;
+    floorEl.style.marginBottom = '';
+    if (calm || !win.animate){ win.hidden = true; return; }
+    var a = closing = win.animate([{opacity:1}, {opacity:0, transform:'scale(.94)'}], {duration:140, easing:'ease-in', fill:'forwards'});
+    a.onfinish = function(){ win.hidden = true; a.cancel(); closing = null; };
+  }
+
+  /* what the camera does when picked up */
+  function snap(cam){
+    var c = centre(cam), p = polas[shots % polas.length];
+    shots++;
+    p.hidden = false;
+    if (calm || !p.animate) return;
+    flash.style.left = c[0] + 'px'; flash.style.top = c[1] + 'px';
+    flash.animate([{opacity:.95, transform:'translate(-50%,-50%) scale(.1)'}, {opacity:0, transform:'translate(-50%,-50%) scale(1)'}], {duration:480, easing:'ease-out'});
+    var pc = centre(p), r = getComputedStyle(p).getPropertyValue('--pr') || '0deg';
+    p.animate([
+      {opacity:0, transform:'translate(' + (c[0]-pc[0]) + 'px,' + (c[1]-pc[1]) + 'px) scale(.2) rotate(0deg)'},
+      {opacity:1, offset:.3},
+      {opacity:1, transform:'translate(0px,0px) scale(1) rotate(' + r + ')'}
+    ], {duration:650, easing:'cubic-bezier(.2,.9,.3,1.2)'});
+  }
+
+  /* packing: a thing that has been read can go back in the bag */
+  function gulp(){
+    if (!calm && bag.animate) bag.animate([{transform:'scale(1)'}, {transform:'scale(1.13)'}, {transform:'scale(1)'}], {duration:260});
+  }
+  function packItem(i){
+    if (typeof i !== 'number' || i < 0 || i === bagI || packed[i] || !read[i]) return;
+    var it = items[i];
+    packed[i] = true;
+    function done(){
+      it.classList.add('is-packed');
+      if (it.dataset.item === 'camera'){ polas.forEach(function(p){ p.hidden = true; }); shots = 0; }
+      gulp(); refresh();
+      if (current === i) pick(bagI, false);
+      if (packedCount() === TOTAL) setTimeout(openThanks, 380);
+    }
+    if (calm || !it.animate){ done(); return; }
+    var bc = centre(bag), ic = centre(it);
+    var a = it.animate([
+      {opacity:1},
+      {opacity:1, offset:.65},
+      {opacity:0, transform:'translate(' + (bc[0]-ic[0]) + 'px,' + (bc[1]-ic[1]) + 'px) scale(.2)'}
+    ], {duration:420, easing:'cubic-bezier(.5,0,.8,.4)', fill:'forwards'});
+    a.onfinish = function(){ done(); a.cancel(); };
+  }
+  function spill(){
+    if (calm || !bag.animate) return;
+    var bc = centre(bag);
+    bag.animate([{transform:'rotate(0deg)'}, {transform:'rotate(-14deg)'}, {transform:'rotate(8deg)'}, {transform:'rotate(0deg)'}], {duration:500});
+    items.forEach(function(it, i){
+      if (it === bag) return;
+      var ic = centre(it);
+      it.animate([
+        {opacity:0, transform:'translate(' + (bc[0]-ic[0]) + 'px,' + (bc[1]-ic[1]) + 'px) scale(.3)'},
+        {opacity:1, offset:.25},
+        {opacity:1, transform:'translate(0px,0px) scale(1)'}
+      ], {duration:700, delay:i*35, easing:'cubic-bezier(.2,.9,.3,1.25)', fill:'backwards'});
+    });
+  }
+  function spillAll(){
+    closeWin();
+    bag.classList.remove('is-done'); bag.style.removeProperty('--r');
+    var from = (offs[bagI].x*floorEl.clientWidth) + 'px ' + (offs[bagI].y*floorEl.clientHeight) + 'px';
+    packed = packed.map(function(){ return false; });
+    items.forEach(function(it){ it.classList.remove('is-packed'); });
+    offs.forEach(function(o, i){ o.x = 0; o.y = 0; place(i); });
+    polas.forEach(function(p){ p.hidden = true; });
+    shots = 0;
+    refresh();
+    pick(bagI, false);
+    if (!calm && bag.animate) bag.animate([{translate:from}, {translate:'0px 0px'}], {duration:300, easing:'ease-out'});
+    spill();
+  }
+
+  items.forEach(function(b, i){
+    b.addEventListener('click', function(){
+      if (b._dragged){ b._dragged = false; return; }
+      pick(i, true);
+      if (b.dataset.item === 'camera') snap(b);
+    });
+  });
+  nextBtn.addEventListener('click', function(){
+    for (var k = 1; k <= items.length; k++){
+      var n = (current + k) % items.length;
+      if (!packed[n]){ pick(n, false); return; }
+    }
+  });
+  putAway.addEventListener('click', function(){ packItem(current); });
+  spillAgain.addEventListener('click', spillAll);
+  spillAllBtn.addEventListener('click', spillAll);
+  document.addEventListener('keydown', function(e){ if (e.key === 'Escape') closeWin(); });
+
+  /* dragging, only for things that have been read: straight away with a mouse,
+     after a short press-and-hold on a touch screen */
+  var drag = null;
+  /* a thing stays put until it has been read; the bag stays put while its tag is out */
+  function locked(i){ return !read[i] || (i === bagI && bag.classList.contains('is-done')); }
+  function lift(i){ items[i].classList.add('dragging'); items[i].style.zIndex = ++topZ; }
+  function startDrag(i, x, y){
+    drag = {i:i, sx:x, sy:y, ox:offs[i].x*floorEl.clientWidth, oy:offs[i].y*floorEl.clientHeight, moved:false};
+  }
+  function moveDrag(x, y){
+    if (!drag) return;
+    var dx = x - drag.sx, dy = y - drag.sy;
+    if (!drag.moved){
+      if (Math.abs(dx) + Math.abs(dy) < 6) return;
+      drag.moved = true; lift(drag.i);
+    }
+    nudge(drag.i, drag.ox + dx, drag.oy + dy);
+  }
+  function endDrag(){
+    if (!drag) return;
+    var i = drag.i, it = items[i], moved = drag.moved;
+    it.classList.remove('dragging');
+    drag = null;
+    if (!moved) return;
+    it._dragged = true; setTimeout(function(){ it._dragged = false; }, 120);
+    if (i !== bagI){
+      var c = centre(it), b = centre(bag);
+      if (Math.abs(c[0]-b[0]) < bag.offsetWidth*.45 && Math.abs(c[1]-b[1]) < bag.offsetHeight*.45) packItem(i);
+    }
+  }
+  items.forEach(function(it, i){
+    it.addEventListener('dragstart', function(e){ e.preventDefault(); });
+    it.addEventListener('pointerdown', function(e){
+      if (locked(i) || e.pointerType === 'touch' || e.button !== 0) return;
+      startDrag(i, e.clientX, e.clientY);
+      try { it.setPointerCapture(e.pointerId); } catch (err) {}
+    });
+    it.addEventListener('pointermove', function(e){
+      if (drag && drag.i === i && e.pointerType !== 'touch') moveDrag(e.clientX, e.clientY);
+    });
+    it.addEventListener('pointerup', function(e){ if (e.pointerType !== 'touch') endDrag(); });
+    it.addEventListener('pointercancel', function(e){ if (e.pointerType !== 'touch') endDrag(); });
+
+    var hold = null, armed = false, tx = 0, ty = 0;
+    it.addEventListener('touchstart', function(e){
+      if (locked(i) || e.touches.length !== 1) return;
+      tx = e.touches[0].clientX; ty = e.touches[0].clientY;
+      armed = false; clearTimeout(hold);
+      hold = setTimeout(function(){ armed = true; startDrag(i, tx, ty); drag.moved = true; lift(i); }, 260);
+    }, {passive:true});
+    it.addEventListener('touchmove', function(e){
+      var t = e.touches[0];
+      if (!armed){ if (Math.abs(t.clientX - tx) + Math.abs(t.clientY - ty) > 8) clearTimeout(hold); return; }
+      e.preventDefault();
+      moveDrag(t.clientX, t.clientY);
+    }, {passive:false});
+    function touchDone(){ clearTimeout(hold); if (armed){ armed = false; endDrag(); } }
+    it.addEventListener('touchend', touchDone);
+    it.addEventListener('touchcancel', touchDone);
+
+    it.addEventListener('keydown', function(e){
+      var k = {ArrowLeft:[-12,0], ArrowRight:[12,0], ArrowUp:[0,-12], ArrowDown:[0,12]}[e.key];
+      if (!k || locked(i)) return;
+      e.preventDefault();
+      nudge(i, offs[i].x*floorEl.clientWidth + k[0], offs[i].y*floorEl.clientHeight + k[1]);
+    });
+  });
+  window.addEventListener('resize', function(){
+    offs.forEach(function(o, i){ place(i); });
+    if (!win.hidden) positionWin();
+  });
+
+  /* the yes timeline: one entry open at a time, starting with Waygate */
+  var yesBtns = Array.prototype.slice.call(document.querySelectorAll('.yes-toggle'));
+  function setYes(open){
+    yesBtns.forEach(function(b){
+      var on = b === open;
+      b.setAttribute('aria-expanded', on ? 'true' : 'false');
+      document.getElementById(b.getAttribute('aria-controls')).hidden = !on;
+    });
+  }
+  yesBtns.forEach(function(b){
+    b.addEventListener('click', function(){ setYes(b.getAttribute('aria-expanded') === 'true' ? null : b); });
+  });
+  setYes(yesBtns.filter(function(b){ return /corporate job/.test(b.textContent); })[0] || null);
+
+  /* tools: click a sticker on the lid to see where I used it */
+  var stks = Array.prototype.slice.call(document.querySelectorAll('.stk'));
+  stks.forEach(function(b){
+    b.addEventListener('click', function(){
+      stks.forEach(function(x){ x.setAttribute('aria-pressed', x === b ? 'true' : 'false'); });
+      q('#stk-group').textContent = b.dataset.group;
+      q('#stk-name').textContent = b.textContent;
+      q('#stk-proof').textContent = (b.dataset.proof || 'In class').replace(/\.$/, '');
+    });
+  });
+
+  /* start on the bag's note; a link ending in #camera (or another item) starts on that one */
+  pick(bagI, false);
+  var wanted = (location.hash || '').slice(1);
+  items.forEach(function(b, i){ if (b.dataset.item === wanted && i !== bagI) pick(i, false); });
+  refresh();
+
+  /* ----- the scroll sequence ----- */
+  if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  document.documentElement.classList.add('is-live');
+
+  var track=q('.track'), stage=q('.stage'), lid=q('.lid'), inner=q('.screen-inner'), screen=q('.screen'),
+      copyWin=q('.copy-window'), copy=q('.copy'),
+      base=q('.base'), sleep=q('.sleep'), streaks=q('.streaks'), floor=q('.floor');
+  var deltas = [];
+  var beat = q('.beat'), beatLines = beat.querySelectorAll('span');
+
+  /* things that fall alongside the laptop: [item, x centre, width, start angle, spin] */
+  var fallers = [
+    ['bag', .14, .13, -20, 70], ['passport', .07, .07, -12, -90], ['airpods', .30, .05, 10, -200],
+    ['phone', .68, .055, -10, 140], ['camera', .80, .12, 15, -60], ['notebook', .91, .09, 8, 50]
+  ].map(function(f){
+    var src = q('.item[data-item="' + f[0] + '"] svg'), el = document.createElement('div');
+    el.className = 'faller'; el.setAttribute('aria-hidden', 'true');
+    el.appendChild(src.cloneNode(true)); stage.appendChild(el);
+    return {el:el, x:f[1], w:f[2], r:f[3], spin:f[4]};
+  });
+
+  function measure(){
+    var hub = items[0];
+    var hx = hub.offsetLeft + hub.offsetWidth/2, hy = hub.offsetTop + hub.offsetHeight/2;
+    deltas = items.map(function(b){
+      return [hx - (b.offsetLeft + b.offsetWidth/2), hy - (b.offsetTop + b.offsetHeight/2)];
+    });
+  }
+
+  function update(){
+    var VW = stage.clientWidth, VH = stage.clientHeight;
+    var total = Math.max(1, track.offsetHeight - VH);
+    var p = clamp(-track.getBoundingClientRect().top / total, 0, 1);
+    var a = inOut(seg(p, 0, .30)), b = inOut(seg(p, .30, .58)), c = seg(p, .58, .76), d = seg(p, .76, 1);
+
+    /* 1. read the screen */
+    var winH = copyWin.clientHeight, dist = Math.max(0, copy.offsetHeight - winH);
+    copy.style.transform = 'translateY(' + (-dist*a) + 'px)';
+
+    /* 2. pull back to the laptop */
+    var lidW = Math.min(VW*.72, VH*.5*1.6), bez = lidW*.022;
+    var sW = lidW - 2*bez, sH = sW*.625, lidH = sH + 2*bez, baseH = Math.max(8, lidW*.036);
+    var lx = (VW - lidW)/2, ly = (VH - (lidH + baseH))/2;
+    var L = lerp(0,lx,b), T = lerp(0,ly,b), W = lerp(VW,lidW,b), H = lerp(VH,lidH,b), pad = bez*b;
+    lid.style.left = L+'px'; lid.style.top = T+'px'; lid.style.width = W+'px'; lid.style.height = H+'px';
+    lid.style.padding = pad+'px'; lid.style.borderRadius = (14*b)+'px';
+    screen.style.borderRadius = (5*b)+'px';
+    inner.style.width = VW+'px'; inner.style.height = VH+'px';
+    inner.style.transform = 'scale(' + ((W - 2*pad)/VW) + ')';
+
+    /* 3. shut the lid */
+    var ang = inOut(c)*90;
+    lid.style.transform = c > 0 ? 'perspective(' + (lidW*2.6) + 'px) rotateX(' + (-ang) + 'deg)' : 'none';
+    lid.style.visibility = c >= 1 ? 'hidden' : 'visible';
+    sleep.style.opacity = seg(c, .1, .6);
+
+    /* 4. drop */
+    var slabH = baseH*(1 + .9*c), fall = d*d*(VH - (T+H) + slabH*4);
+    base.style.left = (L - W*.08)+'px'; base.style.top = (T+H)+'px';
+    base.style.width = (W*1.16)+'px'; base.style.height = slabH+'px';
+    base.style.borderRadius = lerp(3, 7, c)+'px ' + lerp(3, 7, c)+'px ' + lerp(12, 7, c)+'px ' + lerp(12, 7, c)+'px';
+    base.style.setProperty('--seam', c);
+    base.style.transform = 'translateY(' + fall + 'px) rotate(' + (d*3) + 'deg)';
+    streaks.style.left = (L + W*.04)+'px'; streaks.style.width = (W*.92)+'px';
+    streaks.style.top = (T+H)+'px'; streaks.style.height = fall+'px';
+    streaks.style.opacity = Math.min(1, d*5) * (1 - seg(d, .8, 1));
+
+    beat.style.top = (ly + lidH/2) + 'px';
+    beatLines[0].style.opacity = seg(c, .7, 1);
+    beatLines[0].style.transform = 'translateY(' + ((1 - seg(c, .7, 1))*14) + 'px)';
+    beatLines[1].style.opacity = seg(d, .12, .4);
+    beatLines[1].style.transform = 'translateY(' + ((1 - seg(d, .12, .4))*14) + 'px)';
+    var unit = clamp(VW, 520, 1200);
+    fallers.forEach(function(f, k){
+      var w = f.w*unit, t = seg(d, .04 + k*.07, .54 + k*.07), y = lerp(-w*2, VH + w, .6*t*t + .4*t);
+      f.el.style.width = w + 'px';
+      f.el.style.opacity = (t > 0 && t < 1) ? 1 : 0;
+      f.el.style.transform = 'translate(' + (f.x*VW - w/2) + 'px,' + y + 'px) rotate(' + (f.r + f.spin*t) + 'deg)';
+    });
+
+    /* 5. everything lands on the floor */
+    var wh = window.innerHeight;
+    var s = clamp((wh*.92 - floor.getBoundingClientRect().top) / (wh*.6), 0, 1);
+    var doc = document.documentElement;
+    if (window.scrollY + wh >= doc.scrollHeight - 4) s = 1;
+    items.forEach(function(it, i){
+      if (i === 0){
+        var e0 = outBack(seg(s, 0, .5));
+        it.style.transform = 'translateY(' + (-(1-e0)*wh*.4) + 'px) scale(' + (1 + (1-e0)*.5) + ')';
+        it.style.opacity = seg(s, 0, .1);
+        return;
+      }
+      var t = seg(s, .3 + i*.02, .78 + i*.02), e = outBack(t);
+      it.style.transform = 'translate(' + ((1-e)*deltas[i][0]) + 'px,' + ((1-e)*deltas[i][1]) + 'px) scale(' + (.35 + .65*e) + ')';
+      it.style.opacity = seg(t, 0, .2);
+      var spin = (1-e)*(i%2 ? 80 : -80);
+      it.style.setProperty('--spin', spin + 'deg');
+      if (i === bagI && !win.hidden){
+        /* the luggage tag is tied to the bag: it goes where the bag goes and shrinks and fades with it,
+           but it hangs by gravity instead of turning with the bag */
+        moveTag((1-e)*deltas[i][0], (1-e)*deltas[i][1], .35 + .65*e, seg(t, 0, .2));
+      }
+    });
+  }
+
+  var queued = false;
+  function request(){ if (!queued){ queued = true; requestAnimationFrame(function(){ queued = false; update(); }); } }
+  measure(); update();
+  window.addEventListener('scroll', request, {passive:true});
+  window.addEventListener('resize', function(){ measure(); request(); });
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(function(){ measure(); update(); });
+})();
+</script>
+
+</body>
+</html>
